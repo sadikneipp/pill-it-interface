@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Component} from 'react'
+import './App.css'
+import axios from 'axios'
+import Button from '@material-ui/core/Button';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+
+class App extends Component {
+  constructor () {
+    super()
+    this.state = {
+      pred: ''
+    }
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick () {
+    axios.get('localhost:5000/alexareq')//'https://api.github.com/users/maecapozzi')
+      .then(response => this.setState({pred: response.data.medication}))
+  }
+
+  render () {
+    return (
+      <div className='App'>
+        <Button 
+            variant="contained"
+            color="primary"
+            size="large"
+            top="50%"
+            onClick={this.handleClick}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            Detectar pílula!
+        </Button>
+        <p>{"Pílula prevista: " + this.state.pred}</p>
+      </div>
+    )
+  }
 }
 
 export default App;
